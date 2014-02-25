@@ -1,12 +1,6 @@
-import java.util.ArrayList;
 
 
 public class CSP {
-
-	
-	public Variables search(Variables vars, Constraints con, Domain dom){
-		return backtrack(vars, con, dom);
-	}
 
 	public Variables backtrack(Variables vars, Constraints con, Domain dom){
 		if(vars.isComplete()){

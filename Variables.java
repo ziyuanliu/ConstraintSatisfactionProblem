@@ -10,16 +10,20 @@ public class Variables {
 	
 	public Node getUnsetNode(){
 		for(Node temp:this.variables){
-			if(!temp.isSet){
+			if(!temp.isSet()){
 				return temp;
 			}
 		}
 		return null;
 	}
 	
+	public Node getByIndex(int i){
+		return variables.get(i);
+	}
+	
 	public boolean isComplete(){
 		for(Node temp: this.variables){
-			if(!temp.isSet){
+			if(!temp.isSet()){
 				return false;
 			}
 		}

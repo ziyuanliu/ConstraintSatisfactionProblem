@@ -3,38 +3,42 @@ import java.util.List;
 
 public class Node{
 		String label; 
-		ArrayList<Node> neigbors;
-		boolean isSet;
+		ArrayList<Integer> neigbors;
 		int value;
+		int index;
 		
-		public Node(String label){
+		public Node(String label, int index){
 			this.label = label;
-			this.isSet = false;
+			this.value = -1;
+			this.index = index;
 		}
 	
 		public void set(int value){
-			this.isSet = true;
 			this.value = value;
 		}
 		
 		public void unset(){
-			this.isSet = false;
+			this.value = -1;
 		}
 		
-		public void setNeighbors(ArrayList<Node> neighbors){
+		public boolean isSet(){
+			return this.value>-1;
+		}
+		
+		public void setNeighbors(ArrayList<Integer> neighbors){
 			this.neigbors = neighbors;
 		}
 		
-		public ArrayList<Node> getNeighbors(){
+		public ArrayList<Integer> getNeighbors(){
 			return this.neigbors;
 		}
 		
 		public String toString(){
-			return isSet?"Node: "+label+" value: "+value+" neighbors: "+this.neigbors.size() : "Node: "+label+" neighbors: "+this.neigbors.size();
+			return this.isSet() ? "Node: "+label+" value: "+value+" neighbors: "+this.neigbors.size() : "Node: "+label+" neighbors: "+this.neigbors.size();
 		}
 		
 		public int getVal(){
-			return this.isSet? this.value:0;
+			return this.isSet() ? this.value : -1;
 		}
 		
 		
@@ -53,8 +57,8 @@ public class Node{
 			
 			String[] nodeNames = two[0].split(",");
 			
-			for(String name:nodeNames){
-				retval.add(new Node(name.trim()));
+			for(int i = 0; i < nodeNames.length; i++){
+				retval.add(new Node(nodeNames[i],i));
 			}
 			
 			String[] rel = two[1].split("-");
@@ -65,14 +69,14 @@ public class Node{
 			}
 			
 			for(int i = 0; i < retval.size(); i ++){
-				String[] nodes = rel[i].split(" ");
-				ArrayList<Node> tempArray = new ArrayList<Node>();
+				String[] nodes = rel[i].split(",");
+				ArrayList<Integer> tempArray = new ArrayList<Integer>();
 				for(String number: nodes){
 					if(number.equalsIgnoreCase("n")){
-						tempArray = new ArrayList<Node>();
+						tempArray = new ArrayList<Integer>();
 						break;
 					}
-					tempArray.add(retval.get(Integer.parseInt(number)));
+					tempArray.add(Integer.parseInt(number));
 				}
 				Node temp = retval.get(i);
 				temp.setNeighbors(tempArray);
