@@ -1,0 +1,4 @@
+ConstraintSatisfactionProblem
+=============================
+
+Java CSP implementation
