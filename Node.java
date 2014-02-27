@@ -1,18 +1,40 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Node{
+public class Node implements Comparable<Node>{
 		String label; 
-		ArrayList<Integer> neigbors;
+		ArrayList<Integer> neighbors;
+		ArrayList<Integer> blackList;
+		ArrayList<Integer> lastPrune;
 		int value;
 		int index;
+		int priority;
 		
 		public Node(String label, int index){
+			this.neighbors = new ArrayList<Integer>();
+			this.blackList = new ArrayList<Integer>();
+			this.lastPrune = new ArrayList<Integer>();
 			this.label = label;
 			this.value = -1;
 			this.index = index;
+			this.priority = -1;
 		}
 	
+		public void setPriority(int val){
+			this.priority = val;
+		}
+		
+		public void prune(ArrayList<Integer> bad){
+			this.blackList.addAll(bad);
+			Collections.sort(this.blackList);
+			this.lastPrune = bad;
+		}
+		
+		public void unPrune(){
+			this.blackList.removeAll(this.lastPrune);
+			this.lastPrune = new ArrayList<Integer>();
+		}
 		public void set(int value){
 			this.value = value;
 		}
@@ -26,15 +48,15 @@ public class Node{
 		}
 		
 		public void setNeighbors(ArrayList<Integer> neighbors){
-			this.neigbors = neighbors;
+			this.neighbors = neighbors;
 		}
 		
 		public ArrayList<Integer> getNeighbors(){
-			return this.neigbors;
+			return this.neighbors;
 		}
 		
 		public String toString(){
-			return this.isSet() ? "Node: "+label+" value: "+value+" neighbors: "+this.neigbors.size() : "Node: "+label+" neighbors: "+this.neigbors.size();
+			return this.isSet() ? "Node: "+label.trim()+" value: "+value+" neighbors: "+this.neighbors.size() : "Node: "+label.trim()+" neighbors: "+this.neighbors.size();
 		}
 		
 		public int getVal(){
@@ -60,7 +82,6 @@ public class Node{
 			for(int i = 0; i < nodeNames.length; i++){
 				retval.add(new Node(nodeNames[i],i));
 			}
-			
 			String[] rel = two[1].split("-");
 			
 			if(rel.length!=retval.size()){
@@ -82,5 +103,10 @@ public class Node{
 				temp.setNeighbors(tempArray);
 			}
 			return retval;
+		}
+
+		@Override
+		public int compareTo(Node o) {
+			return (int) Math.signum(priority - o.priority);
 		}
 	}
